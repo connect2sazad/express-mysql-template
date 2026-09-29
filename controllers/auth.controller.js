@@ -48,7 +48,6 @@ import { createHash } from "node:crypto";
 import sequelize from "../config/sequelize.js";
 import Models from "../models/registry.js";
 import errors from '../errors/registry.js';
-import { parseRequest } from '../utils/validation.js';
 import Schemas from "../schemas/registry.js";
 import Middlewares from '../middlewares/registry.js';
 import utils from "../utils/registry.js";
@@ -66,7 +65,7 @@ class AuthController {
             const {
                 username,
                 password
-            } = parseRequest(Schemas.LoginSchema, req.body);
+            } = utils.Validations.parseRequest(Schemas.LoginSchema, req.body);
 
             const user = await Models.User.findOne({
                 where: {
@@ -130,7 +129,7 @@ class AuthController {
                 name,
                 email,
                 password
-            } = parseRequest(Schemas.RegisterUserSchema, req.body);
+            } = utils.Validations.parseRequest(Schemas.RegisterUserSchema, req.body);
 
             const existingUser = await Models.User.findOne({
                 paranoid: false,
@@ -181,11 +180,11 @@ class AuthController {
 
         try {
 
-            const { id } = parseRequest(Schemas.ParamsIdSchema, req.params);
+            const { id } = utils.Validations.parseRequest(Schemas.ParamsIdSchema, req.params);
 
             if (!req.auth) throw new errors.UnauthorizedException();
             if (req.auth.id !== id) throw new errors.ForbiddenException();
-            const { password } = parseRequest(Schemas.PasswordResetSchema, req.body);
+            const { password } = utils.Validations.parseRequest(Schemas.PasswordResetSchema, req.body);
 
             const user = await Models.User.findByPk(id);
 

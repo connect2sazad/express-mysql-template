@@ -48,7 +48,6 @@ import {
 } from "sequelize";
 
 import errors from '../errors/registry.js';
-import { parseRequest } from '../utils/validation.js';
 import utils from '../utils/registry.js';
 import Schemas from '../schemas/registry.js';
 
@@ -91,7 +90,7 @@ class BaseController {
         try {
 
             if (req.params.id === undefined) return this.getAllPaginatedRecords(req, res, next);
-            const { id } = parseRequest(Schemas.ParamsIdSchema, req.params);
+            const { id } = utils.Validations.parseRequest(Schemas.ParamsIdSchema, req.params);
 
             // get single record
             if (id) {
@@ -244,7 +243,7 @@ class BaseController {
     // get a record to use internally in other functions
     async getRecord(req) {
 
-        const { id } = parseRequest(Schemas.ParamsIdSchema, req.params);
+        const { id } = utils.Validations.parseRequest(Schemas.ParamsIdSchema, req.params);
 
         const record = await this.model.findByPk(id);
 
@@ -262,7 +261,7 @@ class BaseController {
 
         try {
 
-            const data = this.createSchema ? parseRequest(this.createSchema, req.body) : { ...req.body };
+            const data = this.createSchema ? utils.Validations.parseRequest(this.createSchema, req.body) : { ...req.body };
 
             if (this.creator) {
                 data.creator_id = req.auth.id;
@@ -296,7 +295,7 @@ class BaseController {
 
             const record = await this.getRecord(req);
 
-            const data = this.updateSchema ? parseRequest(this.updateSchema, req.body) : { ...req.body };
+            const data = this.updateSchema ? utils.Validations.parseRequest(this.updateSchema, req.body) : { ...req.body };
 
             if (this.creator) {
                 data.creator_id = req.auth.id;
