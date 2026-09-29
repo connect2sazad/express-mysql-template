@@ -46,9 +46,9 @@ class UserController extends BaseController {
     constructor() {
 
         const settings = {
-            schema: Schemas.UserSchema,
-            createSchema: Schemas.UserCreateSchema,
-            updateSchema: Schemas.UserUpdateSchema,
+            schema: Schemas.Users.UserSchema,
+            createSchema: Schemas.Users.UserCreateSchema,
+            updateSchema: Schemas.Users.UserUpdateSchema,
             creator: false,
             includes: [],
             searchFields: [

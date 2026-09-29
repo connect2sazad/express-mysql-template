@@ -65,7 +65,7 @@ class AuthController {
             const {
                 username,
                 password
-            } = utils.Validations.parseRequest(Schemas.LoginSchema, req.body);
+            } = utils.Validations.parseRequest(Schemas.Auth.LoginSchema, req.body);
 
             const user = await Models.User.findOne({
                 where: {
@@ -94,7 +94,7 @@ class AuthController {
                 );
             }
 
-            const user_data = Schemas.UserSchema.parse(user.toJSON());
+            const user_data = Schemas.Users.UserSchema.parse(user.toJSON());
 
             const tokend = Middlewares.JWTTokenization.generate({
                 id: user_data.id,
@@ -129,7 +129,7 @@ class AuthController {
                 name,
                 email,
                 password
-            } = utils.Validations.parseRequest(Schemas.RegisterUserSchema, req.body);
+            } = utils.Validations.parseRequest(Schemas.Auth.RegisterUserSchema, req.body);
 
             const existingUser = await Models.User.findOne({
                 paranoid: false,
@@ -156,7 +156,7 @@ class AuthController {
                 password: hashed_password,
                 email
                 }, { transaction });
-                return Schemas.UserSchema.parse(user.toJSON());
+                return Schemas.Users.UserSchema.parse(user.toJSON());
             });
 
             return res.status(utils.HTTP_STATUS.HTTP_201_CREATED.status_code).json(
@@ -180,11 +180,11 @@ class AuthController {
 
         try {
 
-            const { id } = utils.Validations.parseRequest(Schemas.ParamsIdSchema, req.params);
+            const { id } = utils.Validations.parseRequest(Schemas.Base.ParamsIdSchema, req.params);
 
             if (!req.auth) throw new errors.UnauthorizedException();
             if (req.auth.id !== id) throw new errors.ForbiddenException();
-            const { password } = utils.Validations.parseRequest(Schemas.PasswordResetSchema, req.body);
+            const { password } = utils.Validations.parseRequest(Schemas.Auth.PasswordResetSchema, req.body);
 
             const user = await Models.User.findByPk(id);
 
@@ -206,7 +206,7 @@ class AuthController {
                 password: hashed_password
             });
 
-            const user_data = Schemas.UserSchema.parse(user.toJSON());
+            const user_data = Schemas.Users.UserSchema.parse(user.toJSON());
 
             return res.status(utils.HTTP_STATUS.HTTP_200_OK.status_code).json(
                 utils.helpers.structurize_response(true,

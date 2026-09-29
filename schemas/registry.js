@@ -35,39 +35,17 @@
  * =============================================================================
  */
 
-import {
-    LoginSchema,
-    RegisterUserSchema,
-    PasswordResetSchema
-} from "./auth.schema.js";
-import { 
-    BaseSchema,
-    BooleanQuerySchema,
-    ParamsIdSchema
-} from "./base.schema.js";
-import {
-    PaginationResponseSchema,
-    PaginationSchema
-} from "./pagination.schema.js";
-import {
-    UserCreateSchema,
-    UserSchema,
-    UserUpdateSchema
-} from "./user.schema.js";
+import * as Auth from "./auth.schema.js";
+import * as Base from "./base.schema.js";
+import * as Pagination from "./pagination.schema.js";
+import * as Users from "./user.schema.js";
 
 
 // export all the schemas
 const Schemas = {
-    BaseSchema,
-    BooleanQuerySchema,
-    UserSchema,
-    UserCreateSchema,
-    UserUpdateSchema,
-    RegisterUserSchema,
-    LoginSchema,
-    PasswordResetSchema,
-    PaginationSchema,
-    PaginationResponseSchema,
-    ParamsIdSchema,
+    Auth,
+    Base,
+    Pagination,
+    Users
 };
 export default Schemas;

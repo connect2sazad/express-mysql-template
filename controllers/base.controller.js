@@ -90,7 +90,7 @@ class BaseController {
         try {
 
             if (req.params.id === undefined) return this.getAllPaginatedRecords(req, res, next);
-            const { id } = utils.Validations.parseRequest(Schemas.ParamsIdSchema, req.params);
+            const { id } = utils.Validations.parseRequest(Schemas.Base.ParamsIdSchema, req.params);
 
             // get single record
             if (id) {
@@ -137,7 +137,7 @@ class BaseController {
         try {
 
             // validate pagination query parameters
-            const validation = Schemas.PaginationSchema.safeParse(req.query);
+            const validation = Schemas.Pagination.PaginationSchema.safeParse(req.query);
 
             if (!validation.success) {
                 throw new errors.ValidationException(
@@ -243,7 +243,7 @@ class BaseController {
     // get a record to use internally in other functions
     async getRecord(req) {
 
-        const { id } = utils.Validations.parseRequest(Schemas.ParamsIdSchema, req.params);
+        const { id } = utils.Validations.parseRequest(Schemas.Base.ParamsIdSchema, req.params);
 
         const record = await this.model.findByPk(id);
 

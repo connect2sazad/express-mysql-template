@@ -73,12 +73,12 @@ test('invalid login and registration bodies are 422', async () => {
 });
 test('registration does not require generated fields and validates matching storage limits', () => {
     const data = { username: 'tester', name: 'Tester', email: 'test@example.com', password: 'secret123', confirm_password: 'secret123' };
-    assert.ok(Schemas.RegisterUserSchema.safeParse(data).success);
-    assert.equal(Schemas.RegisterUserSchema.safeParse({ ...data, confirm_password: 'different' }).success, false);
-    assert.equal(Schemas.RegisterUserSchema.safeParse({ ...data, username: 'x'.repeat(51) }).success, false);
-    assert.equal(Schemas.UserUpdateSchema.safeParse({ username: 'x'.repeat(51) }).success, false);
-    assert.equal(Schemas.UserUpdateSchema.safeParse({}).success, false);
-    assert.equal(Schemas.RegisterUserSchema.safeParse({ ...data, password: 'é'.repeat(37), confirm_password: 'é'.repeat(37) }).success, false);
+    assert.ok(Schemas.Auth.RegisterUserSchema.safeParse(data).success);
+    assert.equal(Schemas.Auth.RegisterUserSchema.safeParse({ ...data, confirm_password: 'different' }).success, false);
+    assert.equal(Schemas.Auth.RegisterUserSchema.safeParse({ ...data, username: 'x'.repeat(51) }).success, false);
+    assert.equal(Schemas.Auth.UserUpdateSchema.safeParse({ username: 'x'.repeat(51) }).success, false);
+    assert.equal(Schemas.Auth.UserUpdateSchema.safeParse({}).success, false);
+    assert.equal(Schemas.Auth.RegisterUserSchema.safeParse({ ...data, password: 'é'.repeat(37), confirm_password: 'é'.repeat(37) }).success, false);
 });
 test('missing, malformed, expired, not-yet-active and invalid-claim tokens return 401', async () => {
     const tokens = [null, 'bad-token', token({}, { expiresIn: -1 }), token({}, { notBefore: '1h' }), token({ id: '1' }),
