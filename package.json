@@ -9,7 +9,9 @@
     "dev": "nodemon server.js",
     "ls": "node ls",
     "test": "node --test tests/*.test.js",
-    "migrate": "sequelize-cli db:migrate"
+    "migrate": "sequelize-cli db:migrate",
+    "status": "sequelize-cli db:migrate:status",
+    "migration": "sequelize-cli migration:generate --name"
   },
   "keywords": [
     "express-mysql-template",
